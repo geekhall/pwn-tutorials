@@ -1,0 +1,6 @@
+break main
+break l33t
+break *0x080485cc
+
+
+

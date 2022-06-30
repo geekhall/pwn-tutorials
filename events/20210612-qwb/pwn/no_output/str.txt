@@ -1,0 +1,62 @@
+[Strings]
+nth paddr      vaddr      len size section   type    string
+―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+0   0x00000028 0x00000028 4   10             utf16le 4 \f(
+1   0x00000156 0x00000156 4   5              ascii   td<!
+2   0x000001b4 0x080481b4 18  19   .interp   ascii   /lib/ld-linux.so.2
+3   0x00000319 0x08048319 9   10   .dynstr   ascii   libc.so.6
+4   0x00000323 0x08048323 14  15   .dynstr   ascii   _IO_stdin_used
+5   0x00000332 0x08048332 6   7    .dynstr   ascii   strcpy
+6   0x00000339 0x08048339 14  15   .dynstr   ascii   __isoc99_scanf
+7   0x00000348 0x08048348 6   7    .dynstr   ascii   signal
+8   0x0000034f 0x0804834f 5   6    .dynstr   ascii   stdin
+9   0x00000355 0x08048355 4   5    .dynstr   ascii   read
+10  0x0000035a 0x0804835a 6   7    .dynstr   ascii   stdout
+11  0x00000361 0x08048361 6   7    .dynstr   ascii   stderr
+12  0x00000368 0x08048368 4   5    .dynstr   ascii   open
+13  0x0000036d 0x0804836d 6   7    .dynstr   ascii   setbuf
+14  0x00000374 0x08048374 17  18   .dynstr   ascii   __libc_start_main
+15  0x00000386 0x08048386 9   10   .dynstr   ascii   GLIBC_2.7
+16  0x00000390 0x08048390 9   10   .dynstr   ascii   GLIBC_2.0
+17  0x0000039a 0x0804839a 14  15   .dynstr   ascii   __gmon_start__
+18  0x0000157f 0x0804957f 6   8    .text     utf8    \f[^_]Í blocks=Basic Latin,Latin-1 Supplement
+19  0x00002008 0x0804a008 12  13   .rodata   ascii   you_see_this
+20  0x00002015 0x0804a015 9   10   .rodata   ascii   hello_boy
+21  0x00002020 0x0804a020 60  61   .rodata   ascii   you meet a dragon and you can get the dragon's soul and egg\n
+22  0x00002060 0x0804a060 76  77   .rodata   ascii   the egg can not be zero,and the dragon will disappear if there is an error!\n
+23  0x000020ad 0x0804a0ad 17  18   .rodata   ascii   give me the soul:
+24  0x000020c2 0x0804a0c2 16  17   .rodata   ascii   give me the egg:
+25  0x000020d3 0x0804a0d3 13  14   .rodata   ascii   real_flag.txt
+26  0x000020e1 0x0804a0e1 18  19   .rodata   ascii   tell me some thing
+27  0x000020f4 0x0804a0f4 27  28   .rodata   ascii   Welcome to the magic world\n
+28  0x00002110 0x0804a110 19  20   .rodata   ascii   Tell me your name:\n
+29  0x00002124 0x0804a124 22  23   .rodata   ascii   now give you the flag\n
+30  0x0000221f 0x0804a21f 5   6    .eh_frame ascii   9*2$"
+31  0x00003037 0x0804c037 42  43   .data     ascii   \bGCC: (Ubuntu 9.3.0-17ubuntu1~20.04) 9.3.0
+32  0x00003063 0x00000001 9   10   .shstrtab ascii   .shstrtab
+33  0x0000306d 0x0000000b 7   8    .shstrtab ascii   .interp
+34  0x00003075 0x00000013 18  19   .shstrtab ascii   .note.gnu.build-id
+35  0x00003088 0x00000026 18  19   .shstrtab ascii   .note.gnu.property
+36  0x0000309b 0x00000039 13  14   .shstrtab ascii   .note.ABI-tag
+37  0x000030a9 0x00000047 9   10   .shstrtab ascii   .gnu.hash
+38  0x000030b3 0x00000051 7   8    .shstrtab ascii   .dynsym
+39  0x000030bb 0x00000059 7   8    .shstrtab ascii   .dynstr
+40  0x000030c3 0x00000061 12  13   .shstrtab ascii   .gnu.version
+41  0x000030d0 0x0000006e 14  15   .shstrtab ascii   .gnu.version_r
+42  0x000030df 0x0000007d 8   9    .shstrtab ascii   .rel.dyn
+43  0x000030e8 0x00000086 8   9    .shstrtab ascii   .rel.plt
+44  0x000030f1 0x0000008f 5   6    .shstrtab ascii   .init
+45  0x000030f7 0x00000095 8   9    .shstrtab ascii   .plt.sec
+46  0x00003100 0x0000009e 5   6    .shstrtab ascii   .text
+47  0x00003106 0x000000a4 5   6    .shstrtab ascii   .fini
+48  0x0000310c 0x000000aa 7   8    .shstrtab ascii   .rodata
+49  0x00003114 0x000000b2 13  14   .shstrtab ascii   .eh_frame_hdr
+50  0x00003122 0x000000c0 9   10   .shstrtab ascii   .eh_frame
+51  0x0000312c 0x000000ca 11  12   .shstrtab ascii   .init_array
+52  0x00003138 0x000000d6 11  12   .shstrtab ascii   .fini_array
+53  0x00003144 0x000000e2 8   9    .shstrtab ascii   .dynamic
+54  0x0000314d 0x000000eb 4   5    .shstrtab ascii   .got
+55  0x00003152 0x000000f0 8   9    .shstrtab ascii   .got.plt
+56  0x0000315b 0x000000f9 5   6    .shstrtab ascii   .data
+57  0x00003161 0x000000ff 4   5    .shstrtab ascii   .bss
+58  0x00003166 0x00000104 8   9    .shstrtab ascii   .comment

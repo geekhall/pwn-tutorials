@@ -1,0 +1,8 @@
+build
+dist
+.gdb_history
+*.pyc
+*/*.pyc
+*.egg-info
+a.out
+.idea

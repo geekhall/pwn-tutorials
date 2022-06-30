@@ -1,0 +1,23 @@
+Foremost version 1.5.7 by Jesse Kornblum, Kris Kendall, and Nick Mikus
+Audit File
+
+Foremost started at Mon Jun  1 06:52:30 2020
+Invocation: foremost mountains_hsctf.jpg 
+Output directory: /home/giantbranch/ctf/20200601-HSCTF/output
+Configuration file: /etc/foremost.conf
+------------------------------------------------------------------
+File: mountains_hsctf.jpg
+Start: Mon Jun  1 06:52:30 2020
+Length: 5 MB (5601006 bytes)
+ 
+Num	 Name (bs=512)	       Size	 File Offset	 Comment 
+
+0:	00000000.jpg 	       5 MB 	          0 	 
+Finish: Mon Jun  1 06:52:30 2020
+
+1 FILES EXTRACTED
+	
+jpg:= 1
+------------------------------------------------------------------
+
+Foremost finished at Mon Jun  1 06:52:30 2020

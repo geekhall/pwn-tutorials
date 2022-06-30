@@ -1,0 +1,12 @@
+0x08053d18 : and eax, 0xfffffffe ; mov dword ptr [ebx], eax ; add esp, 0x18 ; pop ebx ; ret
+0x08053d19 : loopne 0x8053d21 ; mov dword ptr [ebx], eax ; add esp, 0x18 ; pop ebx ; ret
+0x08053d0e : mov dword ptr [ebx], eax ; add esp, 0x18 ; pop ebx ; ret
+0x08081882 : mov dword ptr [ebx], eax ; add esp, 0x24 ; mov eax, esi ; pop ebx ; pop esi ; ret
+0x080a8bd7 : mov dword ptr [ebx], eax ; lea esp, [ebp - 0xc] ; pop ebx ; pop esi ; pop edi ; pop ebp ; ret
+0x0808c5e6 : mov dword ptr [ebx], ecx ; add esp, 0x14 ; pop ebx ; pop esi ; ret
+0x0807199e : mov dword ptr [ebx], edi ; add esp, 0x1c ; pop ebx ; pop esi ; pop edi ; pop ebp ; ret
+0x0804fc26 : mov dword ptr [ebx], edi ; add esp, 0x20 ; pop ebx ; pop esi ; pop edi ; ret
+0x08053a63 : mov dword ptr [ebx], edx ; add esp, 0x18 ; pop ebx ; ret
+0x08053d0b : or eax, 1 ; mov dword ptr [ebx], eax ; add esp, 0x18 ; pop ebx ; ret
+0x0808c5e4 : xor eax, eax ; mov dword ptr [ebx], ecx ; add esp, 0x14 ; pop ebx ; pop esi ; ret
+0x08053a61 : xor eax, eax ; mov dword ptr [ebx], edx ; add esp, 0x18 ; pop ebx ; ret

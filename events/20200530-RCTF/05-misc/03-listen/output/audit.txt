@@ -1,0 +1,21 @@
+Foremost version 1.5.7 by Jesse Kornblum, Kris Kendall, and Nick Mikus
+Audit File
+
+Foremost started at Sun May 31 08:34:30 2020
+Invocation: foremost listen.mp3 
+Output directory: /home/giantbranch/ctf/20200530-RCTF/05-misc/03-listen/output
+Configuration file: /etc/foremost.conf
+------------------------------------------------------------------
+File: listen.mp3
+Start: Sun May 31 08:34:30 2020
+Length: 491 KB (503093 bytes)
+ 
+Num	 Name (bs=512)	       Size	 File Offset	 Comment 
+
+Finish: Sun May 31 08:34:30 2020
+
+0 FILES EXTRACTED
+	
+------------------------------------------------------------------
+
+Foremost finished at Sun May 31 08:34:30 2020

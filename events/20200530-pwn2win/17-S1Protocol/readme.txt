@@ -1,0 +1,1 @@
+We captured one of the human-like robots (androids) and extracted a binary from its memory. Now it is your mission to reverse it and understand how the encryption of the S1 Protocol works.

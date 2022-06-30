@@ -1,0 +1,3 @@
+Captain assigned a task to store the secrets safely but the developer left some hints inside the application to reach the FLAG the name should give you a hint how the things will go around.
+
+Note: App crashing is intentional

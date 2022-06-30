@@ -1,0 +1,11 @@
+0x080bb75d : mov dword ptr [ecx], 0x8307b60f ; ret 0x3c01
+0x0805c725 : mov dword ptr [ecx], 0xf8892788 ; pop ebx ; pop esi ; pop edi ; ret
+0x08087c21 : mov dword ptr [ecx], eax ; jmp 0x8087bf3
+0x080bad7e : mov dword ptr [ecx], eax ; mov eax, dword ptr [edx + 0x4c] ; ret
+0x080789b0 : mov dword ptr [ecx], edx ; add esp, 0x2c ; pop ebx ; pop esi ; pop edi ; pop ebp ; ret
+0x08085647 : mov dword ptr [ecx], esi ; add esp, 0x1c ; pop ebx ; pop esi ; pop edi ; pop ebp ; ret
+0x080d6fe0 : mov dword ptr [ecx], esi ; fdiv st(2) ; scasd eax, dword ptr es:[edi] ; daa ; push esp ; syscall
+0x08087c1f : mov eax, dword ptr [eax] ; mov dword ptr [ecx], eax ; jmp 0x8087bf5
+0x080bad7d : pop ds ; mov dword ptr [ecx], eax ; mov eax, dword ptr [edx + 0x4c] ; ret
+0x080bad7a : pushal ; shr eax, 0x1f ; mov dword ptr [ecx], eax ; mov eax, dword ptr [edx + 0x4c] ; ret
+0x080bad7b : shr eax, 0x1f ; mov dword ptr [ecx], eax ; mov eax, dword ptr [edx + 0x4c] ; ret

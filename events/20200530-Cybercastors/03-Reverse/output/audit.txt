@@ -1,0 +1,21 @@
+Foremost version 1.5.7 by Jesse Kornblum, Kris Kendall, and Nick Mikus
+Audit File
+
+Foremost started at Sun May 31 10:35:39 2020
+Invocation: foremost pooh.jpg 
+Output directory: /home/giantbranch/ctf/20200530-Cybercastors/03-Reverse/output
+Configuration file: /etc/foremost.conf
+------------------------------------------------------------------
+File: pooh.jpg
+Start: Sun May 31 10:35:39 2020
+Length: 217 KB (222827 bytes)
+ 
+Num	 Name (bs=512)	       Size	 File Offset	 Comment 
+
+Finish: Sun May 31 10:35:39 2020
+
+0 FILES EXTRACTED
+	
+------------------------------------------------------------------
+
+Foremost finished at Sun May 31 10:35:39 2020
