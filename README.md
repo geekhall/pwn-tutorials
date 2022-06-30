@@ -3,17 +3,46 @@ CTF pwn tutorials and some challenges collection.
 
 ## checksec
 
-### RELRO
+### RELRO（Relocation Read-Only）
+分成三种
+* Disabled： .got/.got.plt 都可写
+* Partial（default）： .got 无plt指向的GOT是只读的。
+* Fulled： RELRO保护下，会在load time时将全部function resolve完毕。
 
+
+```bash
+# Partial
+gcc -o test test.c # 默认部分开启
+gcc -Wl,-z,relro -o test test.c # 开启部分RELRO
+gcc -z lazy -o test test.c # 部分开启
+
+# Full
+gcc -Wl,-z,relro,-z,now -o test test.c # 开启Full RELRO
+gcc -z now -o test test.c # 全部开启
+```
 ### Stack
 
-### DEP/NX
+### NX（Windows中的DEP）
 
+* NX：No-eXecute
+* DEP：Data Execute Prevention
 * 可写的不写可以执行，可执行的不可写
+```bash
+gcc -o test test.c      # 默认情况下，开启NX保护
+gcc -z execstack -o test test.c  # 禁用NX保护
+gcc -z noexecstack -o test test.c  # 开启NX保护
+```
 
+* 绕过方法
 
-### ALSR
+```
+使用 ROP绕过 (如ret2data、ret2libc、ret2strcpy、ret2gets、ret2syscall)
+gadget：virtualprotect、jmp esp、mona.py
+```
 
+### ASLR（Address Space Layout Randomization）
+
+地址空间随机化
 * 内存位置随机变化，每次执行程序时，stack、heap、library位置都不一样
 * 查看：`cat /proc/sys/kernel/randomize_va_space`
 
@@ -24,14 +53,69 @@ CTF pwn tutorials and some challenges collection.
 
 ### PIE(Position Independent Execution)
 
+可执行程序的基址随机，为ASLR的编译选项，是ASLR的一部分
+
 * gcc在默认情况下不会开启，编译时加上 -fPIC -pie就可以开启
 * 在没开启的情况下程序的data段及code段会是固定的
 * 开启之后data及code段也会跟着ALSR，因此return2shellcode没有固定位置可以跳，变得困难很多。
 * 查看：使用`objdump`查看时，code address会变成只剩下offset，执行时加上code base的地址才是真正内存中的位置。
 
+```bash
+gcc -fpie -pie -o test test.c    # 开启PIE
+gcc -fPIE -pie -o test test.c    # 开启PIE
+gcc -fpic -o test test.c         # 开启PIC
+gcc -fPIC -o test test.c         # 开启PIC
+gcc -no-pie -o test test.c       # 关闭PIE
+```
+
 ### RWX
 
+### Return to Library
 
+一般情况下程序中很难会有system等，可以直接获得shell的function
+在DEP/NX的保护下我们也无法直接填入shellcode去执行我们的代码。
+而在Dynamilic Linking的情况下，大部分程序都会载入libc，libc中有非常多好用的function可以利用
+比如system、execve等，但一般情况下都会因为ALSR的关系，导致每次Libc载入位置不固定
+所以我们通常都需要information leak的漏洞来获取libc的base address，进而算出system等函数的位置，
+再讲程序导过去执行。
+
+通常可以获得libc位置的地方：
+* GOT
+* stack上的残留值：function return后不会将stack中的内容清除
+* heap上的残留值： free完之后再malloc，也不会将heap中的内容清空
+
+可以使用`objdump -T libc.so.6| grep function` 来找到想要的function在libc中的offset
+比如如果能够获得printf的位置，可以找到printf在libc中的offset以及想要利用的function的offset
+那么：system= printf - printf_offset + system_offset
+
+* 如何查找libc的base address：
+
+gdb运行后使用`vmmap`查看
+
+查看对应函数的offset：使用`ldd`查看libc位置后，使用
+
+```
+objdump -T /lib/i386-linux-gnu/libc.so.6 |grep system
+
+0003adb0  w   DF .text	00000037  GLIBC_2.0   system
+00049680 g    DF .text	0000002a  GLIBC_2.0   printf
+```
+
+
+获得system位置后，可以覆盖return address跳到system上，要注意的是参数也要一起放上。
+此时也要注意多空一格，因为我们是利用ret而不是call，一般call之后会push一个return address
+到stack中，function取参数会空一格再取
+
+![](https://gitee.com/geekhall/pic/raw/main/img/20220703104313.png)
+
+
+使用patchelf替换libc.so
+```
+cd /lib64/
+sudo ln -s /home/zzq/shanshi/game/2021/dianfengjike/ghost/ld.so.2 ./15_ld_.so.2
+patchelf --set-interpreter /lib64/15_ld_.so.2 ./pwn
+patchelf --replace-needed libc.so.6 ./libc.so.6 ./pwn
+```
 ### StackGuard/Canary
 
 gcc提供栈溢出保护机制，即默认编译时 -fstack-protector选项为开。
@@ -72,6 +156,19 @@ gcc提供栈溢出保护机制，即默认编译时 -fstack-protector选项为�
     - link_map: 一个将有引用道德library所串成的linked list
     - dl_runtime_resolve: 用于找出函数位置的函数
     - 后面则是程序中.so函数引用位置。
+
+* How to find the GOT
+
+```bash
+objdump -R elf
+# or
+readelf -r elf
+```
+* GOT Hijacking: 如果程序有存在任意更改位置的漏洞，便可以改写GOT，造成程序流程的改变，也就控制了eip
+  前提：GOT位置必须是可以写入的。
+
+
+
 
 ![](https://gitee.com/geekhall/pic/raw/main/img/20220703091821.png)
 
