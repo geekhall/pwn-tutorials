@@ -6,7 +6,7 @@ CTF pwn tutorials and some challenges collection.
 ### RELRO（Relocation Read-Only）
 分成三种
 * Disabled： .got/.got.plt 都可写
-* Partial（default）： .got 无plt指向的GOT是只读的。
+* Partial（default）： .got只读 无plt指向的GOT是只读的。
 * Fulled： RELRO保护下，会在load time时将全部function resolve完毕。
 
 
@@ -225,24 +225,170 @@ gdb attach
 
 gdb$r < exp
 
+## ROP
 
+### gadget
+
+* read/write register/ memory
+
+    ```
+    pop eax; pop ecx; ret;
+    mov [eax] ecx;ret;
+    ```
+write to register：
+
+    ```
+    pop reg; ret;
+    mov reg reg;ret;
+    ```
+* system call
+
+    ```
+    mov eax, SYS_execve;
+    int 0x80;
+    ```
+* change esp
+ 常用于 stack migrate
+    ```
+    pop esp; ret;
+    leave; ret;
+    ```
+
+工具：
+```bash
+ROPgadget --binary binaryfile
+ROPgadget --ropchain --binary binaryfile
+```
+
+
+## Format String
+
+使用方式：
+
+* leak memory
+```C
+printf("%3$p")
+```
+
+`%*$`是指定写入的长度，`%p`是指定写入的类型，`$`是指定写入的位置。
+`%3$p`代表要读`printf`后第三个参数，并用格式`p`打印出来
+
+![](https://gitee.com/geekhall/pic/raw/main/img/20220703193624.png)
+
+
+leak canary、libc base address、stack base address、sensitive data、code base
+
+
+* write to arbitrary memory:
+
+`%n` 可以对特定参数写数值，写入的值为目前已显示的字节数。例如`12345%n`，表示对第三个参数写入len("12345")=5这个数值。
+
+可以配合`%c`来进行写入，`%xxc` 表示打印xx个字节到屏幕上，`%123c%3$n`表示对第三个参数写入123这个数值。
+
+但是`%n`写入大小为一个int的大小，输出量非常大，输出时间也会非常久，我们可以使用`%hn`（2个byte）或者`%hhn`（1个byte）来进行写入。
+
+```python
+def fmt(prev, word, index):
+    if prev < word:
+        result = word - prev
+        fmtstr = "%"+ str(result) + "c"
+        # fmtstr = "%{}c%{}$n".format(result, index)
+        # return "%{}c%{}$n".format(word - prev, index)
+    elif prev == word:
+        result = 0
+    else:
+        result = 256 - prev + word
+        fmtstr = "%"+ str(result) + "c"
+    fmtstr += "%" + str(index) + "$hhn"
+    return fmtstr
+```
+
+## Using ROP bypass ASLR
+
+use .plt section to leak some information
+通常一般的程序中都会有put、send、write等output function
+先泄露一个put或者其他函数的GOT地址，然后根据offset去计算出真正的函数地址，再调用该函数。
+
+bypass PIE
+
+必须比平常多leak一个code段的位置，藉由这个位置算出code base 进而推出所有GOT等咨询。
+有了code base之后其他就跟没有PIE的情况一样了。
+
+bypass ASLR
+
+bypass StackGuard
+
+* canary只有在function return 时做检查
+* 只检查canary值是否一致
+* 所以可以想办法先leak出canary的值，再塞回去就可以bypass。或者想办法不要覆盖canary。
+
+
+## Stack migration
+
+栈迁移
+
+将ROP chain写在已知固定的位置上，再利用leave搬移stack位置到已知位置上。
+可无限接ROP Chain。
+必须注意到Migration之后stack要留大一点，有些function可能会需要很大的stack frame。
+太小的话可能会取到只读区域，导致segmentation fault。
+
+```
+    mov esp, 0x7fffffff;
+    leave;
+    ret;
+```
 
 CTF-pwn-tips
 # Catalog
-* [Overflow](#overflow)
-* [Find string in gdb](#find-string-in-gdb)
-* [Binary Service](#binary-service)
-* [Find specific function offset in libc](#find-specific-function-offset-in-libc)
-* [Find '/bin/sh' or 'sh' in library](#find-binsh-or-sh-in-library)
-* [Leak stack address](#leak-stack-address)
-* [Fork problem in gdb](#fork-problem-in-gdb)
-* [Secret of a mysterious section - .tls](#secret-of-a-mysterious-section---tls)
-* [Predictable RNG(Random Number Generator)](#predictable-rngrandom-number-generator)
-* [Make stack executable](#make-stack-executable)
-* [Use one-gadget-RCE instead of system](#use-one-gadget-rce-instead-of-system)
-* [Hijack hook function](#hijack-hook-function)
-* [Use printf to trigger malloc and free](#use-printf-to-trigger-malloc-and-free)
-* [Use execveat to open a shell](#use-execveat-to-open-a-shell)
+- [pwn-tutorials](#pwn-tutorials)
+  - [checksec](#checksec)
+    - [RELRO（Relocation Read-Only）](#relrorelocation-read-only)
+    - [Stack](#stack)
+    - [NX（Windows中的DEP）](#nxwindows中的dep)
+    - [ASLR（Address Space Layout Randomization）](#aslraddress-space-layout-randomization)
+    - [PIE(Position Independent Execution)](#pieposition-independent-execution)
+    - [RWX](#rwx)
+    - [Return to Library](#return-to-library)
+    - [StackGuard/Canary](#stackguardcanary)
+    - [Lazy binding](#lazy-binding)
+  - [生成shellcode](#生成shellcode)
+  - [Test shellcode](#test-shellcode)
+  - [本地测试环境](#本地测试环境)
+  - [查看函数地址](#查看函数地址)
+  - [查看全局变量地址](#查看全局变量地址)
+  - [调试](#调试)
+  - [ROP](#rop)
+    - [gadget](#gadget)
+  - [Format String](#format-string)
+  - [Using ROP bypass ASLR](#using-rop-bypass-aslr)
+  - [Stack migration](#stack-migration)
+- [Catalog](#catalog)
+  - [Overflow](#overflow)
+    - [scanf](#scanf)
+    - [gets](#gets)
+    - [read](#read)
+    - [strcpy](#strcpy)
+    - [strcat](#strcat)
+  - [Find string in gdb](#find-string-in-gdb)
+    - [gdb](#gdb)
+    - [gdb peda](#gdb-peda)
+  - [Binary Service](#binary-service)
+  - [Find specific function offset in libc](#find-specific-function-offset-in-libc)
+    - [Manually](#manually)
+    - [Automatically](#automatically)
+  - [Find '/bin/sh' or 'sh' in library](#find-binsh-or-sh-in-library)
+    - [Manually](#manually-1)
+    - [Automatically](#automatically-1)
+  - [Leak stack address](#leak-stack-address)
+  - [Fork problem in gdb](#fork-problem-in-gdb)
+  - [Secret of a mysterious section - .tls](#secret-of-a-mysterious-section---tls)
+  - [Predictable RNG(Random Number Generator)](#predictable-rngrandom-number-generator)
+  - [Make stack executable](#make-stack-executable)
+  - [Use one-gadget-RCE instead of system](#use-one-gadget-rce-instead-of-system)
+  - [Hijack hook function](#hijack-hook-function)
+  - [Use printf to trigger malloc and free](#use-printf-to-trigger-malloc-and-free)
+    - [conclusion](#conclusion)
+  - [Use execveat to open a shell](#use-execveat-to-open-a-shell)
 
 
 ## Overflow
